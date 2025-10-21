@@ -13,3 +13,10 @@ Thumbs.db
 
 # VS Code settings
 .vscode/
+
+# Node modules
+client/node_modules/
+server/node_modules/
+
+# Build output
+client/build/

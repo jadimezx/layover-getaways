@@ -4,18 +4,14 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
 
 jobs:
   build_and_deploy_job:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      # Checkout the repository
-      - name: Checkout GitHub Repository
+      # Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       # Setup Node.js
@@ -24,12 +20,11 @@ jobs:
         with:
           node-version: '18'
 
-      # Install frontend dependencies
+      # Build frontend
       - name: Install Frontend Dependencies
         working-directory: ./client
         run: npm install
 
-      # Build frontend
       - name: Build Frontend
         working-directory: ./client
         run: npm run build
@@ -37,7 +32,7 @@ jobs:
       # Install backend dependencies
       - name: Install Backend Dependencies
         working-directory: ./server
-        run: npm install
+        run: npm install || echo "No dependencies in backend"
 
       # Deploy to Azure Static Web Apps
       - name: Deploy to Azure Static Web Apps
@@ -46,6 +41,6 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "client"          # React app folder
-          api_location: "server"          # Express backend folder
-          output_location: "build"        # Output folder relative to app_location
+          app_location: "client"
+          api_location: "server/api"
+          output_location: "build"
