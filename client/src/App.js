@@ -4,7 +4,8 @@ function App() {
   const [tours, setTours] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/tours")
+    // Use relative path for Azure deployment
+    fetch("/api/tours")
       .then(res => res.json())
       .then(data => setTours(data))
       .catch(err => console.error(err));
@@ -18,7 +19,7 @@ function App() {
       referralCode: "CREW10"
     };
 
-    fetch("http://localhost:5000/api/book", {
+    fetch("/api/book", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(booking),
